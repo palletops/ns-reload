@@ -1,6 +1,6 @@
-(defproject com.palletops/ns-dependencies "0.1.0-SNAPSHOT"
+(defproject com.palletops/ns-reload "0.1.0-SNAPSHOT"
   :description "A library for namespace dependencies."
-  :url "https://github.com/palletops/ns-dependencies"
+  :url "https://github.com/palletops/ns-reload"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[robert/hooke "1.3.0"]]

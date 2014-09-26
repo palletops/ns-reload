@@ -1,16 +1,16 @@
-# ns-dependencies
+# ns-reload
 
 A Clojure library to reload namespaces correctly.
 
 ## Installation
 
-Add `[[com.palletops/ns-dependencies "0.1.0-SNAPSHOT"]]` to your
+Add `[[com.palletops/ns-reload "0.1.0-SNAPSHOT"]]` to your
 `:plugins` in the `:user` profile of `profiles.clj`.
 
 ## Usage
 
 ```clj
-(require '[com.palletops.ns-dependencies :refer :as deps])
+(require '[com.palletops.ns-reload :refer :as deps])
 ```
 
 To reload a namespace, e.g. your-ns, and all the namespaces that depend on it:
@@ -22,7 +22,7 @@ To reload a namespace, e.g. your-ns, and all the namespaces that depend on it:
 
 ## Plugin Based Configuration
 
-The plugin can be configured using the `:ns-dependencies` project key.
+The plugin can be configured using the `:ns-reload` project key.
 The key is specified as a map which may contain the following keys:
 
 `:options`
@@ -68,7 +68,7 @@ Filters are specified with keyword and value.  Valid filters are:
 As an example:
 
 ```clj
-:ns-dependencies
+:ns-reload
   {:options {:verbose true}
    :ns-filters {:exclude-regex #"clojure.tools.nrepl.*"}
    :reload-filters {:constantly true}}
@@ -76,13 +76,13 @@ As an example:
 
 ## lein-shorthand integration
 
-The `:plugin.ns-dependencies/shorthand` profile provides mappings for
+The `:plugin.ns-reload/shorthand` profile provides mappings for
 `reload` and `reload-dependents` into the `.` namespace.
 
 To use the profile, add it to your :repl profile.
 
 ```clj
-:repl [:plugin.ns-dependencies/shorthand]
+:repl [:plugin.ns-reload/shorthand]
 ```
 
 You can then call (./reload 'my-ns) to reload a namespace and all its
@@ -99,7 +99,7 @@ Cider, add the following to your emacs configuration.
          (ns (with-current-buffer buf nrepl-buffer-ns)))
     (cider-tooling-eval
      (format
-      "(when-let [rd (resolve 'com.palletops.ns-dependencies.repl/ns-reload-hook)]
+      "(when-let [rd (resolve 'com.palletops.ns-reload.repl/ns-reload-hook)]
          (@rd '%s {))"
       (cider-current-ns))
      (cider-interactive-eval-handler buf)
@@ -110,24 +110,24 @@ Cider, add the following to your emacs configuration.
 
 ## How it Works
 
-`ns-dependencies` works by tracking dependencies using information
+`ns-reload` works by tracking dependencies using information
 returned by `ns-refers`, `ns-aliases` and `ns-imports`.
 
 There are two sources of missing dependency information with this approach.
 
 Firstly if a namespaces `require`s another namespace without an alias
 and without referring anything, then the dependency is not recorded
-anywhere.  `ns-dependencies` works around this by hooking
+anywhere.  `ns-reload` works around this by hooking
 `clojure.core/load-lib` and always adding an alias in this situation.
 
 Secondly, macros can inject dependencies into a namespace.
-`ns-dependencies` provides a hook for `clojure.core/defmacro` that
+`ns-reload` provides a hook for `clojure.core/defmacro` that
 adds a require for the namespace of any fully qualified symbol
 returned by the macro.
 
 ## Comparison with tools.namespaces
 
-`ns-dependencies` works by tracking dependencies from the data
+`ns-reload` works by tracking dependencies from the data
 available in namespaces themselves, without touching any files on
 disk.  `tools.namespace` works by reading the `ns` forms from the
 source files.

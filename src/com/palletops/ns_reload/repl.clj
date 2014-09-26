@@ -1,8 +1,8 @@
-(ns com.palletops.ns-dependencies.repl
+(ns com.palletops.ns-reload.repl
   "Wrappers for use at the repl, with persistent configuration, so it
   can be set in profiles."
   (:require
-   [com.palletops.ns-dependencies :as ns-dependencies]))
+   [com.palletops.ns-reload :as ns-reload]))
 
 (defonce ^:private -config (atom {}))
 
@@ -25,7 +25,7 @@
    clauses))
 
 (defn set-config!
-  "Set the configuration for using ns-dependencies from the repl."
+  "Set the configuration for using ns-reload from the repl."
   ([{:keys [options ns-filters reload-filters pre-reload-hook post-reload-hook]
      :as config}]
      (reset! -config
@@ -41,7 +41,7 @@
   "Reload a namespace and it's dependents.  `options' are merged with any
   configuration that has been set with `set-config!'."
   ([ns-sym {:keys [unload verbose filter-ns?] :as options}]
-     (ns-dependencies/reload ns-sym (merge @-config options)))
+     (ns-reload/reload ns-sym (merge @-config options)))
   ([ns-sym]
      (reload ns-sym {})))
 
@@ -49,7 +49,7 @@
   "Reload the dependents of a namespace. `options' are merged with any
   configuration that has been set with `set-config!'."
   ([ns-sym {:keys [unload verbose filter-ns?] :as options}]
-     (ns-dependencies/reload-dependents
+     (ns-reload/reload-dependents
       ns-sym (merge (:options @-config) options)))
   ([ns-sym]
      (reload-dependents ns-sym {})))
@@ -63,7 +63,7 @@
     (when (and should-reload-dependents? (should-reload-dependents? ns-sym))
       (when-let [f (and pre-reload-hook (resolve pre-reload-hook))]
         (f))
-      (ns-dependencies/reload-dependents
+      (ns-reload/reload-dependents
        ns-sym (merge (:options @-config) options))
       (when-let [f (and post-reload-hook (resolve post-reload-hook))]
         (f)))))

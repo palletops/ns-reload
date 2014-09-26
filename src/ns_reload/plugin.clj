@@ -1,5 +1,5 @@
-(ns ns-dependencies.plugin
-  "Plugin for using ns-dependencies"
+(ns ns-reload.plugin
+  "Plugin for using ns-reload"
   (:require
    [clojure.java.io :as io]
    [leiningen.core.main :as main]
@@ -8,7 +8,7 @@
 
 ;; Keep in sync with VERSION-FORM in project.clj
 (def ^:private properties-file
-  "META-INF/maven/com.palletops/ns-dependencies/pom.properties")
+  "META-INF/maven/com.palletops/ns-reload/pom.properties")
 
 (defn- version
   []
@@ -20,13 +20,13 @@
 
 (defn profiles
   [project]
-  {:plugin.ns-dependencies/injections
-   {:dependencies [['com.palletops/ns-dependencies (version)]]
-    :injections [`(require 'com.palletops.ns-dependencies.hooks
-                           'com.palletops.ns-dependencies.repl)
-                 `(com.palletops.ns-dependencies.hooks/hooks)
-                 `(com.palletops.ns-dependencies.repl/set-config!
-                   ~(:ns-dependencies project))]}})
+  {:plugin.ns-reload/injections
+   {:dependencies [['com.palletops/ns-reload (version)]]
+    :injections [`(require 'com.palletops.ns-reload.hooks
+                           'com.palletops.ns-reload.repl)
+                 `(com.palletops.ns-reload.hooks/hooks)
+                 `(com.palletops.ns-reload.repl/set-config!
+                   ~(:ns-reload project))]}})
 
 (defn middleware
   "Middleware to add a profile defining :injections."
@@ -42,7 +42,7 @@
 (defn repl-hook
   [task & [project & args]]
   (apply task
-         (project/merge-profiles project [:plugin.ns-dependencies/injections])
+         (project/merge-profiles project [:plugin.ns-reload/injections])
          args))
 
 (defn add-repl-hook  []

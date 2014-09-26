@@ -1,6 +1,6 @@
-(ns com.palletops.ns-dependencies-test
-  (:require [com.palletops.ns-dependencies :refer :all]
-            [com.palletops.ns-dependencies.hooks :as hooks]
+(ns com.palletops.ns-reload-test
+  (:require [com.palletops.ns-reload :refer :all]
+            [com.palletops.ns-reload.hooks :as hooks]
             [clojure.test :refer :all]
             [robert.hooke :refer [add-hook]]))
 
@@ -15,6 +15,6 @@
 
 (deftest with-requires-test
   (is (= y "A"))
-  (println (required-namespaces 'com.palletops.ns-dependencies-test))
-  (is ((set (required-namespaces 'com.palletops.ns-dependencies-test))
+  (println (required-namespaces 'com.palletops.ns-reload-test))
+  (is ((set (required-namespaces 'com.palletops.ns-reload-test))
        'clojure.string)))

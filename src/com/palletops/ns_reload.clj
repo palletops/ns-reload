@@ -1,4 +1,4 @@
-(ns com.palletops.ns-dependencies
+(ns com.palletops.ns-reload
   "Calculate a dependency graph for your loaded namespaces.  Can
   reload your dependencies."
   (:require [clojure.set :as set]

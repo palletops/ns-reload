@@ -1,7 +1,7 @@
-(ns com.palletops.ns-dependencies.hooks
+(ns com.palletops.ns-reload.hooks
   "Hooks for augmented namespace tracking"
   (:require
-   [com.palletops.ns-dependencies :refer [depends-on? with-requires]]
+   [com.palletops.ns-reload :refer [depends-on? with-requires]]
    [robert.hooke :refer [add-hook]]))
 
 (defn- -defmacro
