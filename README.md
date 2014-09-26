@@ -40,6 +40,14 @@ The key is specified as a map which may contain the following keys:
   namespaces should be loaded.  Defaults to false.  Requires editor
   integration for automated reloading to function.
 
+`:pre-reload-hook`
+: a symbol for a function to be called before dependent namespaces are
+  reloaded.  Can be used to automatically stop components, etc.
+
+`:post-reload-hook`
+: a symbol for a function to be called after dependent namespaces are
+  reloaded. Can be used to restart components, etc.
+
 Filters are specified with keyword and value.  Valid filters are:
 
 `:constantly`

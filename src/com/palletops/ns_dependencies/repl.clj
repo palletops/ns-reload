@@ -26,13 +26,16 @@
 
 (defn set-config!
   "Set the configuration for using ns-dependencies from the repl."
-  ([{:keys [options ns-filters reload-filters] :as config}]
+  ([{:keys [options ns-filters reload-filters pre-reload-hook post-reload-hook]
+     :as config}]
      (reset! -config
-             {:options (assoc options
-                         :filter-ns? (filter-pred
-                                      (conj ns-filters [:excludes ['user]])
-                                      true))
-              :should-reload-dependents? (filter-pred reload-filters nil)})))
+             (merge
+              (select-keys config [:pre-reload-hook :post-reload-hook])
+              {:options (assoc options
+                          :filter-ns? (filter-pred
+                                       (conj ns-filters [:excludes ['user]])
+                                       true))
+               :should-reload-dependents? (filter-pred reload-filters nil)}))))
 
 (defn reload
   "Reload a namespace and it's dependents.  `options' are merged with any
@@ -55,7 +58,12 @@
   "Function that can be used to add a hook on namespace reload and
   trigger a reload of dependents."
   [ns-sym options]
-  (let [f? (:should-reload-dependents? @-config)]
-    (when (and f? (f? ns-sym))
+  (let [{:keys [should-reload-dependents? pre-reload-hook post-reload-hook]}
+        @-config]
+    (when (and should-reload-dependents? (should-reload-dependents? ns-sym))
+      (when-let [f (and pre-reload-hook (resolve pre-reload-hook))]
+        (f))
       (ns-dependencies/reload-dependents
-       ns-sym (merge (:options @-config) options)))))
+       ns-sym (merge (:options @-config) options))
+      (when-let [f (and post-reload-hook (resolve post-reload-hook))]
+        (f)))))
