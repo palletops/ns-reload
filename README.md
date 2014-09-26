@@ -125,7 +125,9 @@ Secondly, macros can inject dependencies into a namespace.
 adds a require for the namespace of any fully qualified symbol
 returned by the macro.
 
-## Comparison with tools.namespaces
+These hooks are installed by the plugin for the repl task.
+
+## Comparison with tools.namespace
 
 `ns-reload` works by tracking dependencies from the data
 available in namespaces themselves, without touching any files on
