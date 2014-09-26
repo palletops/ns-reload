@@ -1,4 +1,4 @@
-(defproject com.palletops/ns-reload "0.1.0-SNAPSHOT"
+(defproject com.palletops/ns-reload "0.1.0"
   :description "A library for namespace dependencies."
   :url "https://github.com/palletops/ns-reload"
   :license {:name "Eclipse Public License"
