@@ -107,6 +107,16 @@ Cider, add the following to your emacs configuration.
 
 (add-hook 'cider-file-loaded-hook 'my-reload-dependents)
 ```
+## Integration with ns-tracker
+
+[ns-tracker][ns-tacker] watches your files and notifies you of
+namespaces that are out of date.
+
+```clj
+(let [modified-namespaces (ns-tracker.core/ns-tracker ["src" "test"])]
+  (doseq [ns-sym (modified-namespaces)]
+    (com.palletops.ns-reload.repl/ns-reload-hook ns-sym {})))
+```
 
 ## How it Works
 
