@@ -4,7 +4,7 @@ A Clojure library to reload namespaces correctly.
 
 ## Installation
 
-Add `[[com.palletops/ns-reload "0.1.0-SNAPSHOT"]]` to your
+Add `[[com.palletops/ns-reload "0.1.0"]]` to your
 `:plugins` in the `:user` profile of `profiles.clj`.
 
 ## Usage
@@ -143,7 +143,6 @@ These hooks are installed by the plugin for the repl task.
 available in namespaces themselves, without touching any files on
 disk.  `tools.namespace` works by reading the `ns` forms from the
 source files.
-
 
 ## License
 
